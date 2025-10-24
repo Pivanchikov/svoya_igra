@@ -19,17 +19,36 @@
             :players="players"
             :answered-players="answeredPlayers"
             :question-answered="questionAnswered"
+            :show-decor-new-year="showDecorNewYear"
             @answer="handleAnswer"
             @no-answer="noAnswer"
             @close="closeQuestion"
         />
 
         <ResetModal v-if="showResetConfirm" @confirm="resetGame" @cancel="showResetConfirm = false" />
+
+        <template v-if="showDecorNewYear">
+            <Snow/>
+
+            <Garland />
+
+            <img
+                src="./assets/newYear/top-left.webp"
+                alt="picture new year"
+                class="absolute top-0 left-0 w-40 pointer-events-none"
+            >
+
+            <img
+                src="./assets/newYear/top-right.webp"
+                alt="picture new year"
+                class="absolute top-0 right-0 w-40 pointer-events-none"
+            >
+        </template>
     </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import {computed, reactive, ref} from 'vue'
 import questionData from './questions.json'
 import AddPlayers from './components/AddPlayers.vue'
 import PlayerList from './components/PlayerList.vue'
@@ -37,6 +56,8 @@ import RoundSelector from './components/RoundSelector.vue'
 import QuestionBoard from './components/QuestionBoard.vue'
 import QuestionModal from './components/QuestionModal.vue'
 import ResetModal from './components/ResetModal.vue'
+import Snow from "./components/Snow.vue";
+import Garland from "./components/Garland.vue";
 
 const rounds = reactive(loadData('rounds', questionData.rounds))
 const currentRound = ref(loadData('currentRound', 0))
@@ -116,6 +137,14 @@ function loadData(key, fallback) {
         return fallback
     }
 }
+
+const showDecorNewYear = computed(() => {
+    const now = new Date()
+    const month = now.getMonth()  // 0 = январь, 11 = декабрь
+
+    // С 1 декабря по 1 февраля не включительно
+    return month === 11 || month === 0;
+})
 </script>
 
 <style scoped>

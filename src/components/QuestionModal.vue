@@ -1,7 +1,7 @@
 <template>
     <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded max-w-2xl w-full text-gray-900 overflow-y-auto max-h-[90vh] shadow-2xl">
-            <h2 class="text-2xl font-bold mb-4">Вопрос</h2>
+        <div class="bg-white p-6 rounded max-w-2xl w-full text-gray-900 overflow-y-auto max-h-[90vh] shadow-2xl relative">
+            <h2 class="text-2xl font-bold mb-4 mt-0">Вопрос</h2>
             <QuestionViewer :question="question" :show-answer="questionAnswered" />
 
             <div class="mt-6" v-if="players.length">
@@ -35,6 +35,20 @@
                     Закрыть
                 </button>
             </div>
+
+            <template v-if="showDecorNewYear">
+                <img
+                    src="../assets/newYear/top-right.webp"
+                    alt="picture new year"
+                    class="absolute top-0 right-0 w-30 pointer-events-none"
+                >
+
+                <img
+                    src="../assets/newYear/top-left.webp"
+                    alt="picture new year"
+                    class="absolute bottom-0 -left-0.2 w-25 pointer-events-none -rotate-90"
+                >
+            </template>
         </div>
     </div>
 </template>
@@ -42,11 +56,13 @@
 <script setup>
 import QuestionViewer from './QuestionViewer.vue'
 
-const props = defineProps({
+defineProps({
     question: Object,
     players: Array,
     answeredPlayers: Array,
-    questionAnswered: Boolean
-})
-const emit = defineEmits(['answer', 'close', 'no-answer'])
+    questionAnswered: Boolean,
+    showDecorNewYear: Boolean
+});
+
+defineEmits(['answer', 'close', 'no-answer']);
 </script>
